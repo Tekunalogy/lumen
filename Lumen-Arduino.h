@@ -52,9 +52,13 @@ THE SOFTWARE.
 #define PULSE_FREQ      50                  // Hz
 #define PULSE_PERIOD    1000000L/PULSE_FREQ // microseconds
 #define PULSE_CUTOFF    500                 // microseconds
-#define PULSE_MIN       1120                // microseconds
+#define PULSE_MIN       550                // microseconds
 #define PULSE_MAX       1880                // microseconds
 #define INPUT_TIMEOUT   0.050               // seconds
+
+
+#define MANUAL_CUTOFF_DWE     1105          //microseconds
+#define LUX_VARIATION_OFFSET_DWE     10          //microseconds
 
 // INPUT FILTER CHARACTERISTICS
 #define FILTER_DT       0.010f              // seconds
@@ -73,4 +77,4 @@ THE SOFTWARE.
 #define TIM1_PRESCALE   4                   // must match TCCR1 settings
 
 // HYSTERETIC ROUNDING
-#define HYST_FACTOR     0.8                 // 0.5: normal rounding
+#define HYST_FACTOR     1.0                 // 0.5: normal rounding

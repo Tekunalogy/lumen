@@ -76,6 +76,9 @@ void setup() {
 // LOOP //
 //////////
 
+float filteredPulse = 0; // Initialize the filtered value
+const float alpha = 0.1; // Smoothing factor (0 < alpha < 1)
+
 void loop() {
   // Declare local variables for holding large volatile variables
   uint32_t lastpulsetime;
@@ -126,13 +129,19 @@ void loop() {
     }
 
     // Filter and apply hysteretic rounding to input
-    uint8_t input = inputhysteretic.hystRound(inputfilter.step(rawinput));
+    uint16_t filtered = inputfilter.step(rawinput);
+    uint8_t input = inputhysteretic.hystRound(filtered);
 
     // Map input to brightness
     uint8_t brightness = OUTPUT_MAX*expMap((float) input/(N_STEPS-1));
-
+    
+    filteredPulse = alpha * lastpulsein + (1 - alpha) * filteredPulse;
     // Set output PWM timers
-    setBrightness(constrain(brightness, 0, OUTPUT_MAX));
+    if(filteredPulse <= (MANUAL_CUTOFF_DWE + LUX_VARIATION_OFFSET_DWE)) {
+      setBrightness(0);
+    } else {
+      setBrightness(constrain(brightness, 1, OUTPUT_MAX));
+    }
   } // end run filters
 } // end loop()
 

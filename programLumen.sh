@@ -14,8 +14,8 @@ NC='\033[0m'
 # Configuration
 dir=$(dirname $0)
 avrdude="avrdude"
-programmer="usbtiny"
-microcontroller="t45"
+programmer="arduino"
+microcontroller="attiny45"
 hexfile="$dir/Lumen-Arduino.ino.tiny8.hex"
 logfile="$dir/programlumen.log"
 
@@ -23,7 +23,7 @@ logfile="$dir/programlumen.log"
 echo "Starting Lumen Flash Sequence..."
 
 #Write program and set fuses
-$avrdude -c$programmer -p$microcontroller -e -Uefuse:w:0xff:m -Uhfuse:w:0xdf:m -Ulfuse:w:0xfe:m -Uflash:w:$hexfile -u 2>&1 | tee $logfile
+$avrdude -c$programmer -P'/dev/ttyACM0' -b19200 -cstk500v1 -p$microcontroller -e -Uefuse:w:0xff:m -Uhfuse:w:0xdf:m -Ulfuse:w:0xfe:m -Uflash:w:$hexfile -u 2>&1 | tee $logfile
 
 echo -e "${BLUE}=========RESULT=========="
 echo -e "${GREEN}"
